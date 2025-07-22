@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Reporte General</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h2>📊 Reporte General</h2>
+
+    <div style="text-align: left; display: inline-block; padding: 20px; background: white; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+        <p><strong>Total de ventas:</strong> ${{ total_ventas | int | string | replace(',', '.') }}</p>
+        <p><strong>Total pagado:</strong> ${{ total_pago | int | string | replace(',', '.') }}</p>
+        <p><strong>Total pendiente:</strong> ${{ total_pendiente | int | string | replace(',', '.') }}</p>
+
+        <hr>
+
+        <p><strong>Gastos Fijos:</strong> ${{ gastos_fijos | int | string | replace(',', '.') }}</p>
+        <p><strong>Gastos Variables:</strong> ${{ gastos_variables | int | string | replace(',', '.') }}</p>
+
+        <hr>
+
+        <p><strong>💰 Utilidad (Ingresos - Gastos Variables):</strong> ${{ utilidad | int | string | replace(',', '.') }}</p>
+
+        <hr>
+
+        <h3>Personas con deuda:</h3>
+        {% if deudores %}
+            <ul>
+                {% for persona in deudores %}
+                    <li>{{ persona.cliente }} → ${{ persona.pendiente | int | string | replace(',', '.') }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>🎉 No hay deudas registradas.</p>
+        {% endif %}
+    </div>
+
+   <br><br>
+<div style="display: flex; justify-content: center; gap: 20px;">
+    <button onclick="location.href='/'" style="background-color: #4caf50;">
+        🏠 Volver al menú
+    </button>
+    <button onclick="location.reload()" style="background-color: #ff9800;">
+        🔄 Recargar reporte
+    </button>
+</div>
+</body>
+</html>

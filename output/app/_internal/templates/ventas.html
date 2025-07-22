@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registrar Venta</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h2>Registrar Venta</h2>
+    <form action="/registrar_venta" method="POST">
+        <label>Cliente:</label>
+        <input type="text" name="cliente" required><br>
+
+        <label>Paquete:</label>
+        <select name="paquete" id="paquete" required>
+            <option value="">-- Selecciona un combo --</option>
+            <option value="combo quemona">Combo Quemona</option>
+            <option value="combo caliente">Combo Caliente</option>
+            <option value="combo tibio">Combo Tibio</option>
+        </select><br>
+
+        <div id="precio-combo" style="margin-top: 10px; font-weight: bold;"></div>
+
+        <label>Pago:</label>
+        <input type="number" name="pago" step="0.01" required><br>
+
+        <label>Medio de pago:</label>
+        <select name="medio_pago" required>
+            <option value="efectivo">Efectivo</option>
+            <option value="transferencia">Transferencia</option>
+        </select><br>
+
+        <label>Observaciones:</label>
+        <input type="text" name="observaciones"><br>
+
+        <button type="submit">Registrar</button>
+    </form>
+
+    <br>
+    <button onclick="location.href='/'">⬅️ Volver al menú</button>
+
+    <script>
+        document.getElementById('paquete').addEventListener('change', function () {
+            const paquete = this.value;
+            const precioDiv = document.getElementById('precio-combo');
+
+            if (paquete) {
+                fetch(`/precio/${encodeURIComponent(paquete)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        precioDiv.textContent = `Precio: $${data.precio.toLocaleString()}`;
+                    });
+            } else {
+                precioDiv.textContent = '';
+            }
+        });
+    </script>
+</body>
+</html>

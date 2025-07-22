@@ -1,0 +1,93 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registro de Ventas - Quemadas</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Registro de Venta</h1>
+        <form action="/registrar_venta" method="POST">
+            <label>Cliente:</label>
+            <input type="text" name="cliente" required>
+
+            <label>Paquete:</label>
+        <select name="paquete" id="paquete" required>
+            <option value="">-- Selecciona un combo --</option>
+            <option value="combo quemona">Combo Quemona</option>
+            <option value="combo caliente">Combo Caliente</option>
+            <option value="combo tibio">Combo Tibio</option>
+        </select>
+
+<div id="precio-combo" style="margin-top: 10px; font-weight: bold;"></div>
+
+
+            <label>Pago Recibido:</label>
+            <input type="number" name="pago" required step="0.01">
+
+            <label>Medio de Pago:</label>
+            <select name="medio_pago" required>
+                <option value="EFECTIVO">Efectivo</option>
+                <option value="NEQUI">Nequi</option>
+                <option value="DAVIPLATA">Daviplata</option>
+            </select>
+
+            <label>Observaciones:</label>
+            <input type="text" name="observaciones">
+
+            <button type="submit">Registrar Venta</button>
+        </form>
+    </div>
+    <hr>
+<h2>Registrar Gasto</h2>
+<form action="/registrar_gasto" method="POST">
+    <label>Tipo de Gasto:</label>
+    <select name="tipo_gasto" required>
+        <option value="variable">Variable</option>
+        <option value="fijo">Fijo</option>
+    </select>
+
+    <label>Descripción:</label>
+    <input type="text" name="descripcion" required>
+
+    <label>Cantidad:</label>
+    <input type="number" name="cantidad" id="cantidad" min="1" required>
+
+    <label>Valor Unitario:</label>
+    <input type="number" name="valor_unitario" id="valor_unitario" min="0" step="0.01" required>
+
+    <div id="total_gasto" style="margin-top: 10px; font-weight: bold;"></div>
+
+    <button type="submit">Registrar Gasto</button>
+</form>
+    <script>
+document.getElementById('paquete').addEventListener('change', function () {
+    const paquete = this.value;
+    const precioDiv = document.getElementById('precio-combo');
+
+    if (paquete) {
+        fetch(`/precio/${encodeURIComponent(paquete)}`)
+            .then(response => response.json())
+            .then(data => {
+                precioDiv.textContent = `Precio: $${data.precio.toLocaleString()}`;
+            });
+    } else {
+        precioDiv.textContent = '';
+    }
+});
+
+function actualizarTotalGasto() {
+    const cantidad = parseFloat(document.getElementById('cantidad').value) || 0;
+    const valorUnitario = parseFloat(document.getElementById('valor_unitario').value) || 0;
+    const total = cantidad * valorUnitario;
+
+    document.getElementById('total_gasto').textContent = `Total del gasto: $${total.toLocaleString()}`;
+}
+
+document.getElementById('cantidad').addEventListener('input', actualizarTotalGasto);
+document.getElementById('valor_unitario').addEventListener('input', actualizarTotalGasto);
+</script>
+</body>
+</html>

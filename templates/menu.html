@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Menú Principal</title>
+    <style>
+        body { font-family: Arial; text-align: center; padding: 50px; }
+        button {
+            font-size: 20px;
+            padding: 20px;
+            margin: 20px;
+            width: 300px;
+            cursor: pointer;
+        }
+    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Bienvenido al Sistema de Control</h1>
+    <button onclick="location.href='/ventas'">📦 Registrar Venta</button>
+    <button onclick="location.href='/gastos'">🧾 Registrar Gasto</button>
+    <button onclick="location.href='/reporte'" style="background-color: #673ab7;">
+    📊 Ver Reporte General</button>
+</body>
+</html>
